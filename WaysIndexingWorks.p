@@ -96,9 +96,9 @@ WHERE Customer.Name = "John" AND
       Customer.Sales-Rep = "Smith"
 /* the indexes used would be BOTH Name Sales-Rep */
 
-WHERE Comments CONTAINS "Area" 
-  AND Country = "AUS" 
-  AND Postal-Code = "3000" 
+WHERE Comments CONTAINS "Area" AND 
+      Country = "AUS" AND 
+      Postal-Code = "3000" 
 
 /* When Progress uses multiple indexes from a selection the returned records 
 order is unpredictable. 
@@ -107,8 +107,8 @@ You can use the USE-INDEX or BY options to guarantee record return order.
 In the following example, the BY clause guarantees records are sorted by Cust-Num:
 */
 
-WHERE Customer.Country = "AUS" 
- AND Customer.Sales-Rep = "Smith"
+WHERE Customer.Country = "AUS" AND 
+      Customer.Sales-Rep = "Smith"
  BY Cust-Num
 /*
 This search uses the Sales-Rep Index
