@@ -15,38 +15,7 @@ you will get the exact record you've asked for... let's say we have an index:
        CustCountry
 */
 
-WHERE searchExpr AND searchExpr
-For a compound WHERE clause, ABL builds a logic tree and evaluates index usage on 
-either side of the AND. When used with the FOR EACH statement, if both sides of the 
-AND include equality matches on all components of non-unique indexes, both indexes 
-are used. 
-When used with the FIND statement, if both sides of the AND are equality matches on 
-indexed fields, only a single index is used. Note that a word index expression with 
-a simple string is an equality match; a wild card string constitutes a range match:
 
-Sample WHERE clause
-Indexes used
-WHERE Customer.Name = "Mary" 
- AND Customer.Sales-Rep = "Higgins"
-Name
-Sales-Rep
-WHERE Comments CONTAINS "small" 
-  AND Country = "USA" 
-  AND Postal-Code = "01730" 
-Comments
-Country-Post
-If the selection criteria do not support multiple index usage, see the General rules for 
-choosing a single index.
-If ABL uses multiple indexes to select and return records, the precise return order is 
-not predictable. If necessary, you can use the USE-INDEX or BY options to guarantee 
-record return order. In the following example, the BY clause guarantees records are 
-sorted by Cust-Num:
-Sample WHERE clause
-Indexes used
-WHERE Customer.Country = "USA" 
- AND Customer.Sales-Rep = "Higgins"
- BY Cust-Num
-Sales-Rep
 
 /* Find Customer for Input Cust Num */
 FIND FIRST Customer NO-LOCK WHERE
@@ -102,5 +71,45 @@ FOR EACH Customer NO-LOCK WHERE
    (Customer.Country = "USA" OR Customer.Country = "UK"):
  
 /*
+Now let's look at more complex selections... 
 
+When you have selection on a WHERE clause when there is a 
+
+      ( search expression )  AND ( search expression )
+      
+the Progress OpenEdge ABL builds a logic tree and then evaluates the index usage on 
+either side of the AND... but here is the important thing...
+
+*** for a FOR EACH statement, if you have both sides of the AND selection... 
+where there is equality matches on all components of non-unique indexes then
+both indexes are used.
+
+When a selection uses a FIND, with an AND statement...
+If both sides of the AND are equality matches on indexed fields, 
+*** ONLY a single index is used. ***
+
+*** Note: a word index expression with a simple string is an equality match; 
+a wild card string constitutes a range match, so a:
+*/
+
+WHERE Customer.Name = "John" AND 
+      Customer.Sales-Rep = "Smith"
+/* the indexes used would be BOTH Name Sales-Rep */
+
+WHERE Comments CONTAINS "Area" 
+  AND Country = "AUS" 
+  AND Postal-Code = "3000" 
+
+/* When Progress uses multiple indexes from a selection the returned records 
+order is unpredictable. 
+You can use the USE-INDEX or BY options to guarantee record return order.
+
+In the following example, the BY clause guarantees records are sorted by Cust-Num:
+*/
+
+WHERE Customer.Country = "AUS" 
+ AND Customer.Sales-Rep = "Smith"
+ BY Cust-Num
+/*
+This search uses the Sales-Rep Index
 */
