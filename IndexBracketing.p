@@ -1,43 +1,58 @@
 /* 
-Bracketing
-Having selected one or more indexes to satisfy a query, the AVM tries immediately to 
-isolate the smallest necessary index subset, so as to return as few records as possible. 
-This is called bracketing. Careful query design can increase the opportunities for 
-bracketing, thereby preventing ABL from scanning entire indexes and examining all 
-records. 
+/*
+An important feature of the Progress database is Bracketing...
 
-The rules for bracketing are simple:
-*Bracket on active equality matches.
-*Bracket an active range match, but no further brackets are possible for that index.
+not only is it important to know how it works for design and development purposes.
+
+Any selection that you write in your code... Progress's system will work to create
+bracketing... which is - 
+*** get the smallest possible index subset ***
+
+so that we get the smallest possible number of records. Bracketing happens 
+naturally but good design of selection query will help the brackets work properly. 
+
+There are some simple rules for making it work: 
+
+* Bracket on active equality matches
+* Bracket an active range match, but no further brackets are possible for that index.
+
 The following table provides some bracketing examples:
+
+*/
 
 WHERE Contact = "DLC" 
  AND (Sales-Rep BEGINS "S"
    OR Sales-Rep BEGINS "B")
 Cust-Num
 None
+
 WHERE Postal-Code >= "01000" 
  AND City = "Boston"
 Cust-Num
 None
+
 WHERE Name = "Harrison" 
  AND Sales-Rep BEGINS "S" 
 Name
 Name
+
 WHERE Contact = "DLC" 
  AND Sales-Rep BEGINS "S" 
 Sales-Rep
 Sales-Rep
+
 WHERE Country BEGINS "EC"
  AND Sales-Rep BEGINS "S"
  BY Country 
 Country-Post
 Country-Post
+
 WHERE Comments CONTAINS "big"   AND Country = "USA" 
  AND Postal-Code = "01730"  
 Comments Country-Post
 Country Postal-Code
 
+/*
 
 The following recommendations are intended to help you maximize query performance. 
 They are only recommendations, and you can choose to ignore one or more of them 
@@ -51,3 +66,4 @@ word index (WHERE comments CONTAINS “fast* & grow*”) or in separate word ind
 (WHERE comments CONTAINS “fast*” AND report CONTAINS “ris*”).
 *Avoid WHERE clauses that OR a word index reference and a non-indexed criterion 
 (WHERE comments CONTAINS “computer” OR address2 = “Bedford”).
+*/
