@@ -23,23 +23,21 @@ The following table provides some bracketing examples:
 WHERE Contact = "DLC" 
  AND (Sales-Rep BEGINS "S"
    OR Sales-Rep BEGINS "B")
-Cust-Num
-None
+/* Just uses the Cust-Num Index */
+
 
 WHERE Postal-Code >= "01000" 
  AND City = "Boston"
-Cust-Num
-None
+/* Uses the Cust-Num Index */
 
 WHERE Name = "Harrison" 
  AND Sales-Rep BEGINS "S" 
-Name
-Name
+/* Uses the Name Index */
 
 WHERE Contact = "DLC" 
  AND Sales-Rep BEGINS "S" 
-Sales-Rep
-Sales-Rep
+/* Sales-Rep
+Sales-Rep 
 
 WHERE Country BEGINS "EC"
  AND Sales-Rep BEGINS "S"
