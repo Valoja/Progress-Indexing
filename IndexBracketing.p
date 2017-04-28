@@ -37,19 +37,19 @@ WHERE Name = "Harrison"
 WHERE Contact = "DLC" 
  AND Sales-Rep BEGINS "S" 
 /* Sales-Rep
-Sales-Rep 
+Sales-Rep */
 
 WHERE Country BEGINS "EC"
  AND Sales-Rep BEGINS "S"
  BY Country 
-Country-Post
-Country-Post
+/* Country-Post
+Country-Post */
 
 WHERE Comments CONTAINS "big"   AND Country = "USA" 
  AND Postal-Code = "01730"  
-Comments Country-Post
+/* Comments Country-Post
 Country Postal-Code
-
+*/
 /*
 
 The following recommendations are intended to help you maximize query performance. 
